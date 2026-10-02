@@ -27,6 +27,14 @@ updates:
       example:
         patterns: ['*']
 
+  - package-ecosystem: npm
+    directory: /examples/vue
+    schedule:
+      interval: monthly
+    groups:
+      example:
+        patterns: ['*']
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
