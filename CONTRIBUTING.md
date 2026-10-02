@@ -9,6 +9,7 @@ npm ci
 npm test          # vitest: icon markup vs lucide-react 1.0.0, aliases, migrate CLI
 npm run typecheck
 npm run build     # tsup -> dist/
+npm run size      # single-icon bundle size budgets (needs a build)
 ```
 
 ## How the package is built
