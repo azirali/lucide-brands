@@ -39,7 +39,7 @@ Updated 2 file(s): Github, Instagram, Linkedin
 
 Run `npx lucide-brands migrate --dry-run` first to see what would change, or pass a folder: `npx lucide-brands migrate src`. It handles multi-line imports, aliases (`Github as GithubLogo`), the `GithubIcon`/`LucideGithub` names and `type` imports. For `import * as Icons from 'lucide-react'` it prints a warning instead of guessing.
 
-`lucide-react` (1.x) and `react` are peer dependencies. You already have them.
+`lucide-react` (1.x) and `react` are peer dependencies; you already have them. For Vue you need `@lucide/vue` and `vue` instead. All peer dependencies are optional, so you only install the ones for your framework.
 
 ## Or migrate by hand
 
@@ -84,7 +84,26 @@ Nothing else changes:
 | `Twitter` | `TwitterIcon`, `LucideTwitter` |
 | `Youtube` | `YoutubeIcon`, `LucideYoutube` |
 
-## Not using React?
+## Vue
+
+`lucide-brands/vue` has the same icons as components for [`@lucide/vue`](https://lucide.dev/guide/packages/lucide-vue-next):
+
+```vue
+<script setup>
+import { Mail } from '@lucide/vue';
+import { Github, Linkedin } from 'lucide-brands/vue';
+</script>
+
+<template>
+  <Github :size="20" />
+  <Linkedin class="text-muted" />
+  <Mail />
+</template>
+```
+
+They're created with `@lucide/vue`'s own `createLucideIcon`, so props and classes work like any other lucide icon.
+
+## Other frameworks
 
 `lucide-brands/nodes` exports the same icons as plain icon nodes, with no framework dependency. They plug into lucide's other packages.
 

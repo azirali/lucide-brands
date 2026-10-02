@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- `lucide-brands/vue`: the icons as `@lucide/vue` components (`Github`, `GithubIcon`, `LucideGithub`, …).
+- All peer dependencies are now optional, so a Vue project doesn't get React warnings.
 - `lucide-brands/nodes`: the icons as plain icon nodes with no framework dependency, for `lucide` (`createIcons`), `@lucide/svelte` (`<Icon iconNode>`) and friends.
 
 ## 1.1.0
