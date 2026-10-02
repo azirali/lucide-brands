@@ -50,7 +50,7 @@ it('keeps the Chrome alias', () => {
 it('renders like a regular @lucide/vue icon', async () => {
   const brand = await render(vue.Github);
   const regular = await render(current.Mail);
-  const svgTag = (html: string) => html.match(/^<svg[^>]*>/)![0].replace(/lucide-(github|mail)/, 'lucide-NAME');
+  const svgTag = (html: string) => html.match(/^<svg[^>]*>/)![0].replace(/lucide-(github|mail)/g, 'lucide-NAME');
   expect(svgTag(brand)).toBe(svgTag(regular));
 });
 
