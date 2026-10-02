@@ -29,3 +29,16 @@ jobs:
       - run: npm run size
       - run: npx --yes publint --strict
       - run: npx --yes @arethetypeswrong/cli --pack .
+
+  # Oldest supported peers: the first lucide 1.x releases without brand icons, React 18 and Vue 3.2.
+  oldest-peers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save lucide-react@1.1.0 @lucide/vue@1.0.1 lucide@1.1.0 vue@3.2 react@18 react-dom@18
+      - run: npm test
