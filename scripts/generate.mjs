@@ -1,4 +1,4 @@
-// Regenerates src/icons/*.ts, src/index.ts and svg/*.svg from lucide 1.0.0,
+// Regenerates src/icons/*.ts, src/index.ts, svg/*.svg and cli/names.json from lucide 1.0.0,
 // the last release that still shipped brand icons (they were removed in 1.1.0).
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -38,8 +38,10 @@ await rm(join(root, 'src/icons'), { recursive: true, force: true });
 await rm(join(root, 'svg'), { recursive: true, force: true });
 await mkdir(join(root, 'src/icons'), { recursive: true });
 await mkdir(join(root, 'svg'), { recursive: true });
+await mkdir(join(root, 'cli'), { recursive: true });
 
 const exportLines = [];
+const componentNames = [];
 for (const [name, aliases] of Object.entries(ICONS)) {
   const component = pascal(name);
   const source = pathToFileURL(join(lucideReactDir, `dist/esm/icons/${name}.js`)).href;
@@ -61,10 +63,13 @@ export default ${component};
   await writeFile(join(root, `svg/${name}.svg`), svg);
 
   const names = [component, ...aliases].flatMap((n) => [n, `${n}Icon`, `Lucide${n}`]);
+  componentNames.push(...names);
   exportLines.push(
     `export { ${names.map((n) => `default as ${n}`).join(', ')}, __iconNode as ${component.charAt(0).toLowerCase()}${component.slice(1)}IconNode } from './icons/${name}';`,
   );
 }
 
 await writeFile(join(root, 'src/index.ts'), `${header}${exportLines.join('\n')}\n`);
+// Used by the `lucide-brands migrate` CLI to know which lucide-react imports to move.
+await writeFile(join(root, 'cli/names.json'), `${JSON.stringify(componentNames.sort(), null, 2)}\n`);
 console.log(`Generated ${Object.keys(ICONS).length} icons.`);

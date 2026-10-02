@@ -4,6 +4,7 @@
 [![CI](https://github.com/azirali/lucide-brands/actions/workflows/ci.yml/badge.svg)](https://github.com/azirali/lucide-brands/actions/workflows/ci.yml)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/lucide-brands)](https://bundlephobia.com/package/lucide-brands)
 [![license](https://img.shields.io/npm/l/lucide-brands)](./LICENSE)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/azirali/lucide-brands/tree/main/examples/vite-react?file=src%2Fmain.jsx)
 
 **The brand icons that `lucide-react` 1.1 removed, back as drop-in React components.**
 
@@ -20,15 +21,27 @@ Starting with **lucide-react 1.1.0**, `Github`, `Twitter`, `Linkedin`, `Youtube`
   <img alt="Chromium, Codepen, Codesandbox, Dribbble, Facebook, Figma, Framer, Github, Gitlab, Instagram, Linkedin, Pocket, Slack, Trello, Twitch, Twitter, Youtube" src=".github/preview-light.svg">
 </picture>
 
-## Install
+## Quick fix: one command
 
 ```sh
 npm install lucide-brands
+npx lucide-brands migrate
 ```
+
+`migrate` scans your project (skipping `node_modules`, `dist`, `build`, …) and moves every brand icon from your `lucide-react` imports to `lucide-brands`. All other imports stay as they are:
+
+```
+✓ src/components/Footer.tsx: Github, Linkedin, Instagram
+✓ src/components/Team.tsx: Github, Linkedin
+
+Updated 2 file(s): Github, Instagram, Linkedin
+```
+
+Run `npx lucide-brands migrate --dry-run` first to see what would change, or pass a folder: `npx lucide-brands migrate src`. It handles multi-line imports, aliases (`Github as GithubLogo`), the `GithubIcon`/`LucideGithub` names and `type` imports. For `import * as Icons from 'lucide-react'` it prints a warning instead of guessing.
 
 `lucide-react` (1.x) and `react` are peer dependencies. You already have them.
 
-## Migrate in one line
+## Or migrate by hand
 
 ```diff
 - import { Github, Linkedin, Mail } from 'lucide-react';
