@@ -39,6 +39,8 @@ Updated 2 file(s): Github, Instagram, Linkedin
 
 Run `npx lucide-brands migrate --dry-run` first to see what would change, or pass a folder: `npx lucide-brands migrate src`. It handles `import`, `export … from` and `require()`, multi-line imports, aliases (`Github as GithubLogo`), the `GithubIcon`/`LucideGithub` names and `type` imports. In Vue projects it moves icons from `@lucide/vue` or `lucide-vue-next` to `lucide-brands/vue`, including inside `.vue` files. For `import * as Icons from 'lucide-react'` it prints a warning instead of guessing.
 
+To keep brand icons from creeping back into `lucide-react` imports, add `npx lucide-brands migrate --check` to CI. It exits with code 1 and lists the files if anything would change.
+
 `lucide-react` (1.x) and `react` are peer dependencies; you already have them. For Vue you need `@lucide/vue` and `vue` instead. All peer dependencies are optional, so you only install the ones for your framework.
 
 ## Or migrate by hand
