@@ -1,0 +1,30 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dev-dependencies:
+        dependency-type: development
+        update-types: [minor, patch]
+    ignore:
+      # Pinned on purpose: the icons and tests are generated from these exact releases.
+      - dependency-name: lucide-react-1.0.0
+      - dependency-name: lucide-static-1.0.0
+      # tsup's .d.ts bundler does not support TypeScript 7 yet.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: npm
+    directory: /examples/vite-react
+    schedule:
+      interval: monthly
+    groups:
+      example:
+        patterns: ['*']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
