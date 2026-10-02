@@ -1,0 +1,27 @@
+name: Bug report
+description: An icon renders differently, a prop doesn't work, or `migrate` did something wrong
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Code or command to reproduce
+      description: The import / JSX, or the `npx lucide-brands migrate` command and the file it changed.
+      render: tsx
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Output of `npm ls lucide-brands lucide-react react`
+      placeholder: lucide-brands@1.1.0, lucide-react@1.49.0, react@19.2.0
+    validations:
+      required: true
