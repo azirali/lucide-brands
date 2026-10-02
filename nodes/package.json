@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "main": "../dist/nodes.cjs",
+  "module": "../dist/nodes.js",
+  "types": "../dist/nodes.d.cts",
+  "sideEffects": false
+}

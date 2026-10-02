@@ -84,15 +84,40 @@ Nothing else changes:
 | `Twitter` | `TwitterIcon`, `LucideTwitter` |
 | `Youtube` | `YoutubeIcon`, `LucideYoutube` |
 
-### Raw SVG and icon nodes
+## Not using React?
 
-Not using React? The original SVG files ship in the package:
+`lucide-brands/nodes` exports the same icons as plain icon nodes, with no framework dependency. They plug into lucide's other packages.
+
+**Vanilla JS** with [`lucide`](https://lucide.dev/guide/packages/lucide):
+
+```html
+<i data-lucide="github"></i>
+<i data-lucide="linkedin"></i>
+```
+
+```js
+import { createIcons, Mail } from 'lucide';
+import { Github, Linkedin } from 'lucide-brands/nodes';
+
+createIcons({ icons: { Mail, Github, Linkedin } });
+```
+
+**Svelte** with [`@lucide/svelte`](https://lucide.dev/guide/packages/lucide-svelte):
+
+```svelte
+<script>
+  import { Icon } from '@lucide/svelte';
+  import { Github } from 'lucide-brands/nodes';
+</script>
+
+<Icon iconNode={Github} size={20} />
+```
+
+**Plain SVG files** ship in the package too, if you just need the markup:
 
 ```js
 import githubSvg from 'lucide-brands/svg/github.svg';
 ```
-
-The icon node of each icon is exported too (`githubIconNode`, `youtubeIconNode`, …), so you can feed it to `lucide`, `@lucide/vue`, `@lucide/svelte` or your own renderer.
 
 ## Why were they removed?
 
