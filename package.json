@@ -80,7 +80,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "prepublishOnly": "npm run typecheck && npm test && npm run build",
-    "preview": "node scripts/preview.mjs"
+    "preview": "node scripts/preview.mjs",
+    "size": "node scripts/size.mjs"
   },
   "engines": {
     "node": ">=18"

@@ -59,7 +59,7 @@ Nothing else changes:
 - Same output: `<svg class="lucide lucide-github">…`, so your CSS keeps working
 - Respects `<LucideProvider>` defaults, because the icons are created by lucide-react itself
 - Same aliases: `Github`, `GithubIcon`, `LucideGithub` (and `Chrome` for `Chromium`)
-- Tree-shakeable: importing `Github` ships only `Github` (~0.3 kB gzipped)
+- Tree-shakeable: importing `Github` ships only `Github` (~0.3 kB gzipped, checked in CI by `npm run size`)
 - ESM + CommonJS, TypeScript types included
 
 ## Icons
