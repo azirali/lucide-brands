@@ -21,6 +21,14 @@ npm run build     # tsup -> dist/
 
 The package intentionally contains only the 17 icons lucide-react shipped up to 1.0.0, in lucide's style. Requests for new logos are out of scope. [Simple Icons](https://simpleicons.org) covers those much better.
 
+## Releasing
+
+1. Bump `version` in `package.json` and move the `Unreleased` notes in `CHANGELOG.md` under the new version, in a PR.
+2. After it's merged, create a GitHub Release with the tag `vX.Y.Z` (same version) and the changelog notes.
+3. The `Release` workflow checks that the tag matches `package.json`, runs `prepublishOnly` (typecheck, tests, build) and publishes to npm with provenance.
+
+The workflow uses npm trusted publishing, so no token is stored in the repo. The npm package must list this repository and `release.yml` (environment `npm`) as a trusted publisher.
+
 ## Pull requests
 
 Keep PRs focused, add a test for behavior changes, and make sure CI is green.
