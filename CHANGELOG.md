@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- `lucide-brands/nodes`: the icons as plain icon nodes with no framework dependency, for `lucide` (`createIcons`), `@lucide/svelte` (`<Icon iconNode>`) and friends.
+
 ## 1.1.0
 
 - `npx lucide-brands migrate`: moves brand icon imports from `lucide-react` to `lucide-brands` across a whole project (`--dry-run` to preview).
