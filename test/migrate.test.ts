@@ -55,8 +55,29 @@ describe('migrateSource', () => {
   });
 
   it('does not touch other packages', () => {
-    const code = `import { Github } from 'lucide-react-native';\nimport { Github as G } from '@lucide/vue';`;
+    const code = `import { Github } from 'lucide-react-native';\nimport { Github as G } from '@lucide/angular';`;
     expect(migrate(code)).toBe(code);
+  });
+
+  it('moves Vue icons to lucide-brands/vue', () => {
+    expect(migrate(`import { Github, Mail } from '@lucide/vue';`)).toBe(
+      `import { Mail } from '@lucide/vue';\nimport { Github } from 'lucide-brands/vue';`,
+    );
+    expect(migrate(`import { LinkedinIcon } from "lucide-vue-next"`)).toBe(`import { LinkedinIcon } from "lucide-brands/vue"`);
+  });
+
+  it('handles export ... from re-exports', () => {
+    expect(migrate(`export { Github, Mail as MailIcon } from 'lucide-react';`)).toBe(
+      `export { Mail as MailIcon } from 'lucide-react';\nexport { Github } from 'lucide-brands';`,
+    );
+    expect(migrate(`export type { LucideProps } from 'lucide-react';`)).toBe(`export type { LucideProps } from 'lucide-react';`);
+  });
+
+  it('handles require() destructuring, with renames', () => {
+    expect(migrate(`const { Github: GithubLogo, Mail } = require('lucide-react');`)).toBe(
+      `const { Mail } = require('lucide-react');\nconst { Github: GithubLogo } = require('lucide-brands');`,
+    );
+    expect(migrate(`  let {Twitter} = require("lucide-react")`)).toBe(`  let { Twitter } = require("lucide-brands")`);
   });
 
   it('warns about namespace imports instead of guessing', () => {
@@ -80,6 +101,10 @@ describe('npx lucide-brands migrate', () => {
     mkdirSync(join(dir, 'node_modules/pkg'), { recursive: true });
     writeFileSync(join(dir, 'src/Footer.tsx'), `import { Github, Mail } from 'lucide-react';\n`);
     writeFileSync(join(dir, 'src/plain.ts'), `export const a = 1;\n`);
+    writeFileSync(
+      join(dir, 'src/Footer.vue'),
+      `<script setup>\nimport { Github, Mail } from '@lucide/vue';\n</script>\n\n<template><Github /><Mail /></template>\n`,
+    );
     writeFileSync(join(dir, 'node_modules/pkg/index.js'), `import { Github } from 'lucide-react';\n`);
     return dir;
   }
@@ -93,12 +118,15 @@ describe('npx lucide-brands migrate', () => {
       `import { Mail } from 'lucide-react';\nimport { Github } from 'lucide-brands';\n`,
     );
     expect(readFileSync(join(dir, 'node_modules/pkg/index.js'), 'utf8')).toContain(`from 'lucide-react'`);
+    expect(readFileSync(join(dir, 'src/Footer.vue'), 'utf8')).toBe(
+      `<script setup>\nimport { Mail } from '@lucide/vue';\nimport { Github } from 'lucide-brands/vue';\n</script>\n\n<template><Github /><Mail /></template>\n`,
+    );
   });
 
   it('changes nothing with --dry-run', () => {
     const dir = project();
     const out = execFileSync('node', [cli, 'migrate', '--dry-run'], { cwd: dir, encoding: 'utf8' });
-    expect(out).toContain('Would update 1 file(s)');
+    expect(out).toContain('Would update 2 file(s)');
     expect(readFileSync(join(dir, 'src/Footer.tsx'), 'utf8')).toBe(`import { Github, Mail } from 'lucide-react';\n`);
   });
 });
