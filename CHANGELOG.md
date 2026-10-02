@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- `migrate --check`: dry run that exits with code 1 if any file would change, for CI.
 - `migrate` now also handles Vue (`@lucide/vue` / `lucide-vue-next` → `lucide-brands/vue`, including `.vue` files), `export … from` re-exports and `require()` destructuring.
 - `lucide-brands/vue`: the icons as `@lucide/vue` components (`Github`, `GithubIcon`, `LucideGithub`, …).
 - All peer dependencies are now optional, so a Vue project doesn't get React warnings.

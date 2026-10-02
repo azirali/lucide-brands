@@ -3,7 +3,7 @@ import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from '
 import { join, relative, resolve } from 'node:path';
 import { migrateSource, TARGETS } from './migrate.mjs';
 
-const HELP = `Usage: npx lucide-brands migrate [dir] [--dry-run]
+const HELP = `Usage: npx lucide-brands migrate [dir] [--dry-run | --check]
 
 Moves the brand icons removed in lucide 1.1 (Github, Twitter, Linkedin,
 Youtube, ...) from 'lucide-react' to 'lucide-brands', and from '@lucide/vue'
@@ -12,6 +12,8 @@ and require() in .js/.jsx/.ts/.tsx/.vue files.
 
   dir         Folder to scan (default: current folder)
   --dry-run   Show what would change without writing files
+  --check     Like --dry-run, but exit with code 1 if anything would change
+              (use it in CI to keep brand icons from creeping back into lucide-react imports)
 `;
 
 const EXTENSIONS = /\.(?:[cm]?[jt]sx?|vue)$/;
@@ -39,7 +41,8 @@ if (command !== 'migrate') {
   process.exit(1);
 }
 
-const dryRun = rest.includes('--dry-run');
+const check = rest.includes('--check');
+const dryRun = check || rest.includes('--dry-run');
 const root = resolve(rest.find((a) => !a.startsWith('-')) ?? '.');
 if (!existsSync(root) || !statSync(root).isDirectory()) {
   console.error(`Not a folder: ${root}`);
@@ -71,4 +74,8 @@ if (changedFiles === 0) {
   const pkg = existsSync(pkgPath) ? JSON.parse(readFileSync(pkgPath, 'utf8')) : {};
   const installed = { ...pkg.dependencies, ...pkg.devDependencies }['lucide-brands'];
   if (!installed) console.log('Next: npm install lucide-brands');
+  if (check) {
+    console.error('\nRun `npx lucide-brands migrate` to fix these imports.');
+    process.exit(1);
+  }
 }

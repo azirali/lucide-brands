@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -121,6 +121,19 @@ describe('npx lucide-brands migrate', () => {
     expect(readFileSync(join(dir, 'src/Footer.vue'), 'utf8')).toBe(
       `<script setup>\nimport { Mail } from '@lucide/vue';\nimport { Github } from 'lucide-brands/vue';\n</script>\n\n<template><Github /><Mail /></template>\n`,
     );
+  });
+
+  it('fails with --check when something would change, and passes once migrated', () => {
+    const dir = project();
+    const run = () => spawnSync('node', [cli, 'migrate', '--check'], { cwd: dir, encoding: 'utf8' });
+    const before = run();
+    expect(before.status).toBe(1);
+    expect(before.stdout).toContain('Would update 2 file(s)');
+    expect(before.stderr).toContain('npx lucide-brands migrate');
+    expect(readFileSync(join(dir, 'src/Footer.tsx'), 'utf8')).toContain(`from 'lucide-react'`);
+
+    execFileSync('node', [cli, 'migrate'], { cwd: dir });
+    expect(run().status).toBe(0);
   });
 
   it('changes nothing with --dry-run', () => {
