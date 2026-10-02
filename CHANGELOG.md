@@ -2,11 +2,20 @@
 
 ## Unreleased
 
-- `migrate --check`: dry run that exits with code 1 if any file would change, for CI.
-- `migrate` now also handles Vue (`@lucide/vue` / `lucide-vue-next` → `lucide-brands/vue`, including `.vue` files), `export … from` re-exports and `require()` destructuring.
-- `lucide-brands/vue`: the icons as `@lucide/vue` components (`Github`, `GithubIcon`, `LucideGithub`, …).
-- All peer dependencies are now optional, so a Vue project doesn't get React warnings.
+## 1.2.0
+
+### New
+- `lucide-brands/vue`: the icons as `@lucide/vue` components (`Github`, `GithubIcon`, `LucideGithub`, …), plus a Vue demo in `examples/vue`.
 - `lucide-brands/nodes`: the icons as plain icon nodes with no framework dependency, for `lucide` (`createIcons`), `@lucide/svelte` (`<Icon iconNode>`) and friends.
+- `migrate` also handles Vue (`@lucide/vue` / `lucide-vue-next` → `lucide-brands/vue`, including `.vue` files), `export … from` re-exports and `require()` destructuring.
+- `migrate --check`: dry run that exits with code 1 if any file would change, for CI.
+
+### Changed
+- All peer dependencies are optional now, so a Vue project doesn't get React peer warnings (and vice versa).
+
+### Maintenance
+- CI also runs against the oldest supported peers (lucide-react 1.1.0, @lucide/vue 1.0.1, React 18, Vue 3.2) and enforces single-icon bundle size budgets.
+- Releases are published from GitHub Releases with npm provenance.
 
 ## 1.1.0
 
