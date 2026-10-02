@@ -1,18 +1,20 @@
 #!/usr/bin/env node
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
-import { migrateSource } from './migrate.mjs';
+import { migrateSource, TARGETS } from './migrate.mjs';
 
 const HELP = `Usage: npx lucide-brands migrate [dir] [--dry-run]
 
-Moves the brand icons removed in lucide-react 1.1 (Github, Twitter, Linkedin,
-Youtube, ...) from 'lucide-react' imports to 'lucide-brands' imports.
+Moves the brand icons removed in lucide 1.1 (Github, Twitter, Linkedin,
+Youtube, ...) from 'lucide-react' to 'lucide-brands', and from '@lucide/vue'
+or 'lucide-vue-next' to 'lucide-brands/vue'. Handles import, export ... from
+and require() in .js/.jsx/.ts/.tsx/.vue files.
 
   dir         Folder to scan (default: current folder)
   --dry-run   Show what would change without writing files
 `;
 
-const EXTENSIONS = /\.(?:[cm]?[jt]sx?)$/;
+const EXTENSIONS = /\.(?:[cm]?[jt]sx?|vue)$/;
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'out', 'coverage', '.next', '.nuxt', '.svelte-kit', '.turbo', '.vercel']);
 
 function* walk(dir) {
@@ -48,7 +50,7 @@ let changedFiles = 0;
 const movedNames = new Set();
 for (const file of walk(root)) {
   const source = readFileSync(file, 'utf8');
-  if (!source.includes('lucide-react')) continue;
+  if (!Object.keys(TARGETS).some((pkg) => source.includes(pkg))) continue;
 
   const { code, moved, warnings } = migrateSource(source);
   const name = relative(process.cwd(), file);
@@ -62,7 +64,7 @@ for (const file of walk(root)) {
 }
 
 if (changedFiles === 0) {
-  console.log('No brand icon imports from lucide-react found.');
+  console.log('No brand icon imports from lucide-react, @lucide/vue or lucide-vue-next found.');
 } else {
   console.log(`\n${dryRun ? 'Would update' : 'Updated'} ${changedFiles} file(s): ${[...movedNames].sort().join(', ')}`);
   const pkgPath = join(process.cwd(), 'package.json');
