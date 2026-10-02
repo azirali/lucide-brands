@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly, to catch lucide-react releases that change createLucideIcon
+    - cron: '17 6 * * 1'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        react: [18, 19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save react@${{ matrix.react }} react-dom@${{ matrix.react }} lucide-react@latest
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npx --yes publint --strict
+      - run: npx --yes @arethetypeswrong/cli --pack .
