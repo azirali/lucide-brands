@@ -1,6 +1,6 @@
 {
   "name": "lucide-brands",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "The brand icons removed from lucide-react 1.1 (Github, Twitter, Linkedin, Youtube, Instagram, Facebook, Slack, Figma...) as drop-in React components.",
   "keywords": [
     "brand-icons",
