@@ -103,7 +103,7 @@ import { Github, Linkedin } from 'lucide-brands/vue';
 </template>
 ```
 
-They're created with `@lucide/vue`'s own `createLucideIcon`, so props and classes work like any other lucide icon.
+They're created with `@lucide/vue`'s own `createLucideIcon`, so props and classes work like any other lucide icon. [Try it on StackBlitz](https://stackblitz.com/github/azirali/lucide-brands/tree/main/examples/vue?file=src%2FApp.vue).
 
 ## Other frameworks
 
