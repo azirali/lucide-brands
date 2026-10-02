@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "main": "../dist/vue.cjs",
+  "module": "../dist/vue.js",
+  "types": "../dist/vue.d.cts",
+  "sideEffects": false
+}
